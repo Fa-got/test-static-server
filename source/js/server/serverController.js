@@ -3,7 +3,7 @@ import staticServer from "./staticServer";
 
 class ServerController {
 	constructor() {
-		this.http = new staticServer();
+		this.static = new staticServer();
 	}
 
 	init() {
@@ -16,7 +16,7 @@ class ServerController {
 
 	initServer() {
 		return new Promise((resolve, reject) => {
-			this.http.init().then(resolve).catch(reject);
+			this.static.init().then(resolve).catch(reject);
 		});
 	}
 }

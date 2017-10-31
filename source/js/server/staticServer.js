@@ -1,16 +1,17 @@
 import http from "http";
-import express from "express";
-import path from "path";
-// import Config from "@/config.json";
-import fs from "fs";
+import express, {Router} from "express";
+import Config from "@/severConfig.json";
+import ApiController from "./../api/ApiController";
+import bodyParser from "bodyParser";
+
 
 class staticServer {
     constructor() {
+        this.router = new Router()
         this.app = express();
         this.server = http.createServer(this.app);
-        this.ip = "localhost";
-        this.port = 3000;
-        this.folder = `c1`
+        this.ip = Config.server.host;
+        this.port = Config.server.port;
     }
 
     init() {
@@ -19,6 +20,7 @@ class staticServer {
                 .then(() => {
                     this.initMiddleware();
                     this.initView();
+                    this.initApi();
                     this.initGetHandlers();
                 })
                 .then(resolve)
@@ -38,6 +40,8 @@ class staticServer {
     }
 
     initMiddleware() {
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use((req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Credentials", true);
@@ -48,19 +52,40 @@ class staticServer {
     }
 
     initView() {
-        this.app.use("/", express.static(`public/${this.folder}`));
+        this.app.use("/public", express.static(`public`));
+
+    }
+
+    initApi(){
+        this.app.use((req, res, next) => {
+            if(req.module.hash === this.module.hash
+                && req.id === this.id ){
+
+                //start-api
+                this.app.use('/api', this.router);
+                //api-reboot
+                this.router.post('/reboot', (req, res) => {
+                    ApiController.reboot();
+                });
+                //api-refresh
+                this.router.post('/refresh', (req, res) => {
+                    ApiController.refresh();
+                });
+                //api-config
+                this.router.post('/config', (req, res) => {
+                    res.json({"timeShot": 5000});
+                });
+            }else{
+
+            }
+
+
     }
 
 
 
-    initGetHandlers() {
+    initGetHandlers(){
         this.app.get("/favicon.ico", (req, res) => res.sendStatus(204));
-
-        fs.readdir(`public/`, (err, files) => {
-            files.forEach(file => {
-                console.log(file);
-            });
-        })
     }
 }
 
