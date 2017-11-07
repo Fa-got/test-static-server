@@ -1,4 +1,4 @@
-import ServerController from "~/server/serverController";
+import ServerController from "~/network/server/serverController";
 
 const LoaderList = [
 

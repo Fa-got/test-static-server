@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "babel-node test/index.js",
     "dev": "babel-node index.js",
     "start": "node build/bundle.min.js",
     "prod": "webpack --define process.env.NODE_ENV='\"production\"' --config ./webpack.prod.config.js",
@@ -20,9 +20,11 @@
   "dependencies": {
     "bbt-loader": "^1.0.3",
     "body-parser": "^1.17.0",
+    "es6-promise": "^4.1.1",
     "express": "^4.15.2",
     "helmet": "^3.4.1",
     "ip": "^1.1.5",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
