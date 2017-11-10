@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "babel-node test/index.js",
+    "test1": "babel-node test/index.js",
+    "test2": "babel-node source/js/update/updateApp.js",
     "dev": "babel-node index.js",
     "start": "node build/bundle.min.js",
     "prod": "webpack --define process.env.NODE_ENV='\"production\"' --config ./webpack.prod.config.js",
@@ -29,7 +30,8 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "redux-store-controller": "^1.0.5",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "unzip": "^0.1.11"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
