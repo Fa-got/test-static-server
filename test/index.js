@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import fetch from "isomorphic-fetch";
-import crypto from "crypto";
+import path from 'path';
 require("es6-promise").polyfill();
 import Config from "@/server.config.json";
 
@@ -10,10 +10,9 @@ class TestRequest {
 		this.app = express();
 		this.server = http.createServer(this.app);
 		this.id = 999;
-		this.ip = "127.0.0.1";
+		this.ip = "localhost";
 		this.port = 2000;
 		this.url = "http://localhost:3000/api/reboot";
-		console.log(Config);
 		this.init();
 	}
 
@@ -23,6 +22,7 @@ class TestRequest {
 				.then(() => {
 					this.initMiddleware();
 					// this.initRequest()
+                    this.initView();
 					this.initGetHandlers();
 				})
 				.then(resolve)
@@ -41,14 +41,6 @@ class TestRequest {
 		});
 	}
 
-	// encode(){
-	// 	let algorithm = 'aes-256-ctr'
-	// 	encrypt(text){
-	//  		var cipher = crypto.createCipher(algorithm,password)
-	//  		var crypted = cipher.update(text,'utf8','hex')
-	//  		crypted += cipher.final('hex');
-	//  		return crypted;
-	// }
 
 	initRequest() {
 		let data = {
@@ -75,13 +67,17 @@ class TestRequest {
 			});
 	}
 
-	initMiddleware() {
-		this.app.use((req, res, next) => {
-			res.header("Access-Control-Allow-Credentials", true);
-			res.header("Access-Control-Allow-Methods", "GET, POST");
-			res.header("Access-Control-Allow-Headers", "Cache-Control");
-			next();
-		});
+    initMiddleware() {
+        this.app.use((req, res, next) => {
+            res.header("Access-Control-Allow-Credentials", true);
+            res.header("Access-Control-Allow-Methods", "GET, POST");
+            res.header("Access-Control-Allow-Headers", "Cache-Control");
+            next();
+        });
+    }
+
+    initView(){
+        this.app.use('/content', express.static(path.join(__dirname, 'content')));
 	}
 
 	initGetHandlers() {
