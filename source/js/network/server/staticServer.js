@@ -3,6 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import ConfigServer from "@/server.config.json";
 import ApiController from "../api/apiController";
+import UpdateApp from '../../update/updateApp';
 
 class staticServer {
 	constructor() {
@@ -11,6 +12,11 @@ class staticServer {
 		this.ip = ConfigServer.server.host;
 		this.port = ConfigServer.server.port;
 		this.api = new ApiController();
+
+		this.testZip = new UpdateApp;
+		this.testZip.on("done",)
+		this.testZip.init();
+
 	}
 
 	init() {
@@ -19,7 +25,6 @@ class staticServer {
 				.then(() => {
 					this.initMiddleware();
 					this.initView();
-					// this.apiHandler();
 					this.initApi();
 					this.initGetHandlers();
 				})
@@ -57,17 +62,6 @@ class staticServer {
 	initApi() {
 		this.app.use("/api", this.api.router);
 	}
-
-	// apiHandler(body, res){
-	//     // console.log(body )
-	//     if(body.module.id === 999 &&  body.module.ip === '127.0.0.1'){
-	//         res.send('OK');
-	//
-	//         ApiController.reboot();
-	//     }else{
-	//         res.send('fuck you');
-	//     }
-	// }
 
 	initGetHandlers() {
 		this.app.get("/favicon.ico", (req, res) => res.sendStatus(204));

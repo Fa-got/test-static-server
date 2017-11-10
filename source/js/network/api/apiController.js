@@ -1,6 +1,7 @@
 import { exec } from "child_process";
 import { Router } from "express";
 import playerConfig from "@/player.config.json";
+import TakeScreenshot from "../../electron/TakeScreenshot";
 
 class ApiController {
 	constructor() {
@@ -9,7 +10,7 @@ class ApiController {
 	}
 
 	initRouter() {
-        // api-reboot
+		// api-reboot
 		this.router.post("/reboot", (req, res) => {
 			console.log(req.body);
 			// this.apiHandler(req.body, res)
@@ -22,9 +23,13 @@ class ApiController {
 		});
 
 		// api-config
-		this.router.get("/config", (req, res) => {
-			ApiController.config();
+		this.router.post("/config", (req, res) => {
 			res.send(ApiController.config());
+		});
+
+		// api-screenShot
+		this.router.post("/screenShot", (req, res) => {
+			res.send(ApiController.screenShot());
 		});
 	}
 
@@ -40,6 +45,10 @@ class ApiController {
 	static refresh() {
 		console.log("refresh");
 		// this.browser.refresh()
+	}
+	static screenShot() {
+		console.log("buffer");
+		return TakeScreenshot.takeScreanShot();
 	}
 }
 
